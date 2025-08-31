@@ -52,6 +52,24 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
+				depot: {
+					DEFAULT: 'hsl(var(--depot))',
+					foreground: 'hsl(var(--depot-foreground))'
+				},
+				'delivery-point': {
+					DEFAULT: 'hsl(var(--delivery-point))',
+					foreground: 'hsl(var(--delivery-point-foreground))'
+				},
+				vehicle: {
+					DEFAULT: 'hsl(var(--vehicle))',
+					foreground: 'hsl(var(--vehicle-foreground))'
+				},
+				'route-active': 'hsl(var(--route-active))',
+				'route-planned': 'hsl(var(--route-planned))',
+				'grid-cell': 'hsl(var(--grid-cell))',
+				'grid-border': 'hsl(var(--grid-border))',
+				'traffic-jam': 'hsl(var(--traffic-jam))',
+				'event-warning': 'hsl(var(--event-warning))',
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
 					foreground: 'hsl(var(--sidebar-foreground))',

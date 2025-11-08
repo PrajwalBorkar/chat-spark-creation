@@ -43,10 +43,10 @@ All colors MUST be HSL.
     --depot-foreground: 0 0% 100%;
     --delivery-point: 15 100% 60%;
     --delivery-point-foreground: 0 0% 100%;
-    --vehicle: 120 100% 35%;
+    --vehicle: 120 100% 50%;
     --vehicle-foreground: 0 0% 100%;
     --route-active: 270 100% 60%;
-    --route-planned: 240 50% 80%;
+    --route-planned: 240 80% 65%;
     --grid-cell: 220 15% 95%;
     --grid-border: 220 20% 85%;
     --traffic-jam: 0 100% 50%;
@@ -103,10 +103,10 @@ All colors MUST be HSL.
     --depot-foreground: 0 0% 100%;
     --delivery-point: 15 100% 65%;
     --delivery-point-foreground: 0 0% 100%;
-    --vehicle: 120 100% 45%;
+    --vehicle: 120 100% 55%;
     --vehicle-foreground: 0 0% 100%;
     --route-active: 270 80% 70%;
-    --route-planned: 240 40% 60%;
+    --route-planned: 240 70% 50%;
     --grid-cell: 240 5% 15%;
     --grid-border: 240 10% 25%;
     --traffic-jam: 0 100% 60%;

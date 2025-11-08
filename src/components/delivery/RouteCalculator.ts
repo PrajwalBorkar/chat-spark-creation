@@ -5,6 +5,27 @@ export class RouteCalculator {
     return Math.abs(point1.x - point2.x) + Math.abs(point1.y - point2.y);
   }
 
+  // Generate step-by-step path between two points
+  static generatePath(from: { x: number; y: number }, to: { x: number; y: number }): { x: number; y: number }[] {
+    const steps: { x: number; y: number }[] = [];
+    let currentX = from.x;
+    let currentY = from.y;
+
+    // Move horizontally first
+    while (currentX !== to.x) {
+      currentX += currentX < to.x ? 1 : -1;
+      steps.push({ x: currentX, y: currentY });
+    }
+
+    // Then move vertically
+    while (currentY !== to.y) {
+      currentY += currentY < to.y ? 1 : -1;
+      steps.push({ x: currentX, y: currentY });
+    }
+
+    return steps;
+  }
+
   static nearestNeighborRoute(
     depot: { x: number; y: number },
     deliveryPoints: DeliveryPoint[],
@@ -31,14 +52,17 @@ export class RouteCalculator {
         }
       }
 
-      path.push({ x: nearestPoint.x, y: nearestPoint.y });
+      // Add step-by-step path to nearest point
+      const stepsToPoint = this.generatePath(currentPosition, nearestPoint);
+      path.push(...stepsToPoint);
       totalDistance += shortestDistance;
       currentPosition = nearestPoint;
       unvisited.splice(unvisited.indexOf(nearestPoint), 1);
     }
 
     // Return to depot
-    path.push(depot);
+    const stepsToDepot = this.generatePath(currentPosition, depot);
+    path.push(...stepsToDepot);
     totalDistance += this.calculateDistance(currentPosition, depot);
 
     return {
@@ -100,14 +124,17 @@ export class RouteCalculator {
         }
       }
 
-      path.push({ x: bestPoint.x, y: bestPoint.y });
+      // Add step-by-step path to best point
+      const stepsToPoint = this.generatePath(currentPosition, bestPoint);
+      path.push(...stepsToPoint);
       totalDistance += this.calculateDistance(currentPosition, bestPoint);
       currentPosition = bestPoint;
       unvisited.splice(unvisited.indexOf(bestPoint), 1);
     }
 
     // Return to depot
-    path.push(depot);
+    const stepsToDepot = this.generatePath(currentPosition, depot);
+    path.push(...stepsToDepot);
     totalDistance += this.calculateDistance(currentPosition, depot);
 
     // AI optimization typically improves by 10-20%

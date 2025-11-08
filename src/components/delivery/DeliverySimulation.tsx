@@ -118,7 +118,7 @@ export const DeliverySimulation: React.FC = () => {
           currentTime: new Date().toLocaleTimeString()
         };
       });
-    }, 1500); // Move every 1.5 seconds
+    }, 500); // Move every 0.5 seconds for smoother animation
 
     return () => clearInterval(interval);
   }, [simulationState.isRunning, simulationState.isPaused, currentRoute, deliveryPoints, toast]);

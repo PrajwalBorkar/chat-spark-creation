@@ -21,11 +21,22 @@ export const DeliveryGrid: React.FC<DeliveryGridProps> = ({
   onCellClick
 }) => {
   const getCellContent = (x: number, y: number) => {
-    // Check if this is the depot
-    if (depot.x === x && depot.y === y) {
+    // PRIORITY ORDER: Vehicle > Traffic > Delivery Points > Depot > Route > Empty
+    
+    // Check if this is the vehicle position (HIGHEST PRIORITY)
+    if (vehicle.x === x && vehicle.y === y) {
       return (
-        <div className="w-full h-full bg-depot rounded-sm flex items-center justify-center">
-          <span className="text-depot-foreground font-bold text-xs">🏢</span>
+        <div className="w-full h-full bg-vehicle rounded-sm flex items-center justify-center ring-2 ring-vehicle-foreground">
+          <span className="text-vehicle-foreground font-bold text-lg">🚛</span>
+        </div>
+      );
+    }
+
+    // Check if this is a traffic jam
+    if (trafficJams.some(tj => tj.x === x && tj.y === y)) {
+      return (
+        <div className="w-full h-full bg-traffic-jam rounded-sm flex items-center justify-center">
+          <span className="text-white font-bold text-xs">🚧</span>
         </div>
       );
     }
@@ -46,20 +57,11 @@ export const DeliveryGrid: React.FC<DeliveryGridProps> = ({
       );
     }
 
-    // Check if this is the vehicle position
-    if (vehicle.x === x && vehicle.y === y) {
+    // Check if this is the depot
+    if (depot.x === x && depot.y === y) {
       return (
-        <div className="w-full h-full bg-vehicle rounded-sm flex items-center justify-center">
-          <span className="text-vehicle-foreground font-bold text-xs">🚛</span>
-        </div>
-      );
-    }
-
-    // Check if this is a traffic jam
-    if (trafficJams.some(tj => tj.x === x && tj.y === y)) {
-      return (
-        <div className="w-full h-full bg-traffic-jam rounded-sm flex items-center justify-center">
-          <span className="text-white font-bold text-xs">🚧</span>
+        <div className="w-full h-full bg-depot rounded-sm flex items-center justify-center">
+          <span className="text-depot-foreground font-bold text-xs">🏢</span>
         </div>
       );
     }

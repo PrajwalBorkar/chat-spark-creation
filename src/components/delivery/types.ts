@@ -47,4 +47,5 @@ export interface SimulationState {
   currentStep: number;
   totalSteps: number;
   currentTime: string;
+  speed: number;
 }

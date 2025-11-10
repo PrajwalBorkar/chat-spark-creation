@@ -42,8 +42,14 @@ export class RouteCalculator {
 
       for (const point of unvisited) {
         const distance = this.calculateDistance(currentPosition, point);
-        // Add penalty for traffic jams
-        const trafficPenalty = trafficJams.some(tj => tj.x === point.x && tj.y === point.y) ? 5 : 0;
+        
+        // Check entire path for traffic jams
+        const pathToPoint = this.generatePath(currentPosition, point);
+        const trafficPenalty = pathToPoint.reduce((penalty, step) => {
+          const hasTraffic = trafficJams.some(tj => tj.x === step.x && tj.y === step.y);
+          return penalty + (hasTraffic ? 5 : 0); // 5 units penalty per traffic cell
+        }, 0);
+        
         const adjustedDistance = distance + trafficPenalty;
         
         if (adjustedDistance < shortestDistance) {
@@ -107,7 +113,14 @@ export class RouteCalculator {
 
       for (const point of unvisited) {
         const distance = this.calculateDistance(currentPosition, point);
-        const trafficPenalty = trafficJams.some(tj => tj.x === point.x && tj.y === point.y) ? 3 : 0;
+        
+        // AI checks entire path for traffic (smarter avoidance)
+        const pathToPoint = this.generatePath(currentPosition, point);
+        const trafficPenalty = pathToPoint.reduce((penalty, step) => {
+          const hasTraffic = trafficJams.some(tj => tj.x === step.x && tj.y === step.y);
+          return penalty + (hasTraffic ? 3 : 0); // AI penalty is lower as it plans better
+        }, 0);
+        
         const priorityBonus = { high: -2, medium: -1, low: 0 }[point.priority];
         
         // AI considers remaining points for better overall optimization

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { DeliveryGrid } from './DeliveryGrid';
 import { SimulationControls } from './SimulationControls';
 import { EventPanel } from './EventPanel';
+import { RouteStatistics } from './RouteStatistics';
 import { RouteCalculator } from './RouteCalculator';
 import { 
   DeliveryPoint, 
@@ -53,7 +54,8 @@ export const DeliverySimulation: React.FC = () => {
     isPaused: false,
     currentStep: 0,
     totalSteps: 0,
-    currentTime: new Date().toLocaleTimeString()
+    currentTime: new Date().toLocaleTimeString(),
+    speed: 1500
   });
 
   // Generate initial route
@@ -118,10 +120,10 @@ export const DeliverySimulation: React.FC = () => {
           currentTime: new Date().toLocaleTimeString()
         };
       });
-    }, 1000); // Move every 1 second for better visibility
+    }, simulationState.speed || 1000);
 
     return () => clearInterval(interval);
-  }, [simulationState.isRunning, simulationState.isPaused, currentRoute, deliveryPoints, toast]);
+  }, [simulationState.isRunning, simulationState.isPaused, currentRoute, deliveryPoints, toast, simulationState.speed]);
 
   // Event handlers
   const handleStart = useCallback(() => {
@@ -152,7 +154,8 @@ export const DeliverySimulation: React.FC = () => {
       isPaused: false,
       currentStep: 0,
       totalSteps: 0,
-      currentTime: new Date().toLocaleTimeString()
+      currentTime: new Date().toLocaleTimeString(),
+      speed: 1500
     });
     
     const newDeliveryPoints = RouteCalculator.generateRandomDeliveryPoints(7, GRID_SIZE, depot);
@@ -198,6 +201,10 @@ export const DeliverySimulation: React.FC = () => {
       description: `Route optimized: ${optimizedRoute.totalDistance} units (-${Math.floor(Math.random() * 20 + 10)}%)`
     });
   }, [depot, deliveryPoints, trafficJams, events, toast]);
+
+  const handleSpeedChange = useCallback((speed: number) => {
+    setSimulationState(prev => ({ ...prev, speed }));
+  }, []);
 
   const handleTriggerEvent = useCallback(() => {
     const eventTypes: SimulationEvent['type'][] = ['traffic_jam', 'road_closure', 'new_order'];
@@ -317,6 +324,14 @@ export const DeliverySimulation: React.FC = () => {
               onGenerateRoute={handleGenerateRoute}
               onOptimizeWithAI={handleOptimizeWithAI}
               onTriggerEvent={handleTriggerEvent}
+              onSpeedChange={handleSpeedChange}
+            />
+            
+            <RouteStatistics
+              currentRoute={currentRoute}
+              trafficJamCount={trafficJams.length}
+              deliveredCount={deliveryPoints.filter(dp => dp.delivered).length}
+              totalDeliveries={deliveryPoints.length}
             />
             
             <EventPanel

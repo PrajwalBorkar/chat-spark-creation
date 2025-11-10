@@ -2,8 +2,9 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Slider } from '@/components/ui/slider';
 import { SimulationState, Route } from './types';
-import { Play, Pause, Square, RotateCcw, Zap, MapPin } from 'lucide-react';
+import { Play, Pause, Square, RotateCcw, Zap, MapPin, Gauge } from 'lucide-react';
 
 interface SimulationControlsProps {
   simulationState: SimulationState;
@@ -15,6 +16,7 @@ interface SimulationControlsProps {
   onGenerateRoute: () => void;
   onOptimizeWithAI: () => void;
   onTriggerEvent: () => void;
+  onSpeedChange: (speed: number) => void;
 }
 
 export const SimulationControls: React.FC<SimulationControlsProps> = ({
@@ -26,7 +28,8 @@ export const SimulationControls: React.FC<SimulationControlsProps> = ({
   onReset,
   onGenerateRoute,
   onOptimizeWithAI,
-  onTriggerEvent
+  onTriggerEvent,
+  onSpeedChange
 }) => {
   return (
     <Card className="w-full">
@@ -94,6 +97,27 @@ export const SimulationControls: React.FC<SimulationControlsProps> = ({
             <RotateCcw className="h-4 w-4" />
             Reset
           </Button>
+        </div>
+
+        {/* Speed Control */}
+        <div className="space-y-2">
+          <div className="flex items-center gap-2">
+            <Gauge className="h-4 w-4" />
+            <h4 className="text-sm font-medium">Animation Speed</h4>
+            <Badge variant="outline">{(3000 - simulationState.speed) / 100}x</Badge>
+          </div>
+          <Slider
+            value={[simulationState.speed]}
+            onValueChange={(values) => onSpeedChange(values[0])}
+            min={500}
+            max={3000}
+            step={250}
+            className="w-full"
+          />
+          <div className="flex justify-between text-xs text-muted-foreground">
+            <span>Fast</span>
+            <span>Slow</span>
+          </div>
         </div>
 
         {/* Route Generation */}
